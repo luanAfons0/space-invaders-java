@@ -1,4 +1,4 @@
-package screens;
+package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,16 +6,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import entities.KeyHandler;
+import entities.Player;
 
 public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     private static final int FPS = 60;
     KeyHandler keyHandler = new KeyHandler();
-
-    int px = 100;
-    int py = 100;
-    int speed = 5;
+    Player player = new Player(this, keyHandler);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT));
@@ -31,14 +28,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void handleFPS() {
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = 1000000000 / FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         try {
             double remainingTime = nextDrawTime - System.nanoTime();
             remainingTime = remainingTime / 1000000;
 
-            if(remainingTime < 0){
+            if (remainingTime < 0) {
                 remainingTime = 0;
             }
             Thread.sleep((long) remainingTime);
@@ -59,10 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if(keyHandler.upPressed == true) py -= speed;
-        if(keyHandler.leftPressed == true) px -= speed;
-        if(keyHandler.rightPressed == true) px += speed;
-        if(keyHandler.downPressed == true) py += speed;
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
@@ -70,8 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(Color.white);
-        g2.fillRect(px, py, 50, 50);
+        player.draw(g2);
+
         g2.dispose();
     }
 }
