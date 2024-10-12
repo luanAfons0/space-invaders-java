@@ -6,13 +6,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
+import entities.Enemy;
 import entities.Player;
 
 public class GamePanel extends JPanel implements Runnable {
+    public boolean running;
     Thread gameThread;
     private static final int FPS = 60;
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player(this, keyHandler);
+    Enemy simpleEnemy = new Enemy(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT));
@@ -25,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
+        this.running = true;
     }
 
     public void handleFPS() {
@@ -56,7 +60,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
+        if(this.running){
+            player.update();
+            simpleEnemy.update();
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -65,6 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         player.draw(g2);
+        simpleEnemy.draw(g2);
 
         g2.dispose();
     }
