@@ -1,4 +1,4 @@
-package entities;
+package screens;
 
 import javax.swing.JFrame;
 
