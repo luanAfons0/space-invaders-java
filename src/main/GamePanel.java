@@ -13,16 +13,18 @@ import entities.Projectile;
 import screens.BackGround;
 import screens.GameOver;
 import screens.MainMenu;
+import screens.MissionSuccess;
 
 public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player(this, keyHandler);
 
-    public boolean running, gameOver, mainMenu;
+    public boolean running, gameOver, mainMenu, missionSuccess;
     public BackGround backGround;
     public GameOver gameOverScreen;
     public MainMenu mainMenuScreen;
+    public MissionSuccess missionSuccessScreen;
 
     private static final int FPS = 60;
     private List<Enemy> enemies = new ArrayList<>();
@@ -38,8 +40,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         this.gameOver = false;
         this.mainMenu = true;
-        this.gameOverScreen = new GameOver(0, 0, keyHandler);
-        this.mainMenuScreen = new MainMenu(0, 0, keyHandler);
+        this.missionSuccess = false;
+        this.gameOverScreen = new GameOver(0, 0);
+        this.mainMenuScreen = new MainMenu(0, 0);
+        this.missionSuccessScreen = new MissionSuccess(0, 0);
         this.backGround = new BackGround(0, 0, "/res/sprites/space.jpg");
 
         // Setup all entities
@@ -86,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void resetGame(){
         // Reset gameover variable
         gameOver = false;
+        missionSuccess = false;
 
         // Reset enemies
         enemies.removeAll(enemies);
@@ -109,8 +114,16 @@ public class GamePanel extends JPanel implements Runnable {
             return;
         }
 
-        // Game over related
+        // Game over and success related
         if(gameOver == true){
+            if(keyHandler.spacePressed){
+                this.resetGame();
+            }
+            return;
+        }
+
+        // Mission success related
+        if(missionSuccess == true){
             if(keyHandler.spacePressed){
                 this.resetGame();
             }
@@ -123,6 +136,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Update player infos
         player.update(projectiles);
+
+        // Check if there is enemies alive
+        if(enemies.isEmpty()) missionSuccess = true;
 
         // Handle enemy update
         for(Enemy enemy: enemies){
@@ -171,6 +187,12 @@ public class GamePanel extends JPanel implements Runnable {
         // Main menu related
         if(mainMenu == true){
             mainMenuScreen.draw(g2);
+            return;
+        }
+
+        // Mission success related
+        if(missionSuccess == true){
+            missionSuccessScreen.draw(g2);
             return;
         }
 
