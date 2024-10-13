@@ -60,9 +60,15 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        System.err.println(player.rect.x);
+
         if(this.running){
             player.update();
             simpleEnemy.update();
+        }
+
+        if(simpleEnemy.rect.intersects(player.rect)){
+            this.running = false;
         }
     }
 

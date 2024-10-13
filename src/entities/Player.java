@@ -1,7 +1,7 @@
 package entities;
 
-import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import main.GamePanel;
 import main.GameWindow;
@@ -13,18 +13,10 @@ public class Player extends Sprite {
     KeyHandler keyHandler;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-        super(GameWindow.WINDOW_WIDTH / 2, GameWindow.WINDOW_HEIGHT - 100, 5, 50);
+        super(GameWindow.WINDOW_WIDTH / 2, GameWindow.WINDOW_HEIGHT - 100, 5, 50, "/res/ship.png");
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
-        this.getPlayerImage();
-    }
-
-    public void getPlayerImage(){
-        try {
-            this.sprite = ImageIO.read(getClass().getResourceAsStream("/res/ship.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.rect = new Rectangle(this.x, this.y, this.size, this.size);
     }
 
     public void update() {
@@ -51,6 +43,8 @@ public class Player extends Sprite {
             };
             this.y += speed;
         };
+
+        this.updateRectangle();
     }
 
     public void draw(Graphics2D g2) {

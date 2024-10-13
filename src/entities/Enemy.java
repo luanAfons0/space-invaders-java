@@ -1,7 +1,7 @@
 package entities;
 
 import java.awt.Graphics2D;
-import javax.imageio.ImageIO;
+import java.awt.Rectangle;
 
 import main.GamePanel;
 import main.GameWindow;
@@ -10,17 +10,9 @@ public class Enemy extends Sprite{
     GamePanel gamePanel;
 
     public Enemy(GamePanel gamePanel) {
-        super(GameWindow.WINDOW_WIDTH / 2, 100, 5, 50);
+        super(GameWindow.WINDOW_WIDTH / 2, 100, 5, 50, "/res/alien.png");
         this.gamePanel = gamePanel;
-        getEnemyImage();
-    }
-
-    public void getEnemyImage(){
-        try {
-            this.sprite = ImageIO.read(getClass().getResourceAsStream("/res/alien.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.rect = new Rectangle(this.x, this.y, this.size, this.size);
     }
 
     public void update() {
@@ -30,6 +22,7 @@ public class Enemy extends Sprite{
         }
 
         this.x += speed;
+        this.updateRectangle();
     }
 
     public void draw(Graphics2D g2) {
