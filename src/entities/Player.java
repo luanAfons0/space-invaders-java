@@ -1,51 +1,59 @@
 package entities;
 
-import java.awt.Color;
+import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 
 import main.GamePanel;
 import main.GameWindow;
 import main.KeyHandler;
 
-public class Player {
-    int playerX, playerY, size;
+public class Player extends Sprite {
     int speed = 5;
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
+        super(GameWindow.WINDOW_WIDTH / 2, GameWindow.WINDOW_HEIGHT - 100, 5, 50);
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
-        this.playerX = GameWindow.WINDOW_WIDTH / 2;
-        this.playerY = GameWindow.WINDOW_HEIGHT - 100;
-        this.size = 50;
+        this.getPlayerImage();
+    }
+
+    public void getPlayerImage(){
+        try {
+            this.sprite = ImageIO.read(getClass().getResourceAsStream("/res/ship.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void update() {
         if (keyHandler.upPressed == true) {
-            if(playerY + speed <= 0) return;
-            playerY -= speed;
+            if(this.y + speed <= 0) return;
+            this.y -= speed;
         };
+
         if (keyHandler.leftPressed == true) {
-            if(playerX + speed <= 0) return;
-            playerX -= speed;
+            if(this.x + speed <= 0) return;
+            this.x -= speed;
         };
+
         if (keyHandler.rightPressed == true) {
-            if((playerX + speed) + size >= GameWindow.WINDOW_WIDTH) {
-                playerX = GameWindow.WINDOW_WIDTH - size;
+            if((this.x + speed) + this.size >= GameWindow.WINDOW_WIDTH) {
+                this.x = GameWindow.WINDOW_WIDTH - this.size;
             };
-            playerX += speed;
+            this.x += speed;
         };
+        
         if (keyHandler.downPressed == true) {
-            if((playerY + speed) + size >= GameWindow.WINDOW_HEIGHT){
-                playerY = GameWindow.WINDOW_HEIGHT - size;
+            if((this.y + speed) + this.size >= GameWindow.WINDOW_HEIGHT){
+                this.y = GameWindow.WINDOW_HEIGHT - this.size;
             };
-            playerY += speed;
+            this.y += speed;
         };
     }
 
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.white);
-        g2.fillRect(playerX, playerY, size, size);
+        g2.drawImage(this.sprite,this.x, this.y, this.size, this.size,null);
     }
 }
