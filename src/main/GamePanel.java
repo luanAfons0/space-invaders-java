@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import entities.Enemy;
 import entities.Player;
 import entities.Projectile;
+import screens.BackGround;
 
 public class GamePanel extends JPanel implements Runnable {
     public boolean running;
@@ -20,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     Player player = new Player(this, keyHandler);
     private List<Enemy> enemies = new ArrayList<>();
     private List<Projectile> projectiles = new ArrayList<>();
+    public BackGround backGround;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT));
@@ -27,6 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+
+        this.backGround = new BackGround(0, 0, "/res/space.jpg");
 
         for(int i = 0; i < 10; i++){
             enemies.add(new Enemy((50 * i),5,this));
@@ -107,6 +111,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+
+        backGround.draw(g2);
 
         player.draw(g2);
 
