@@ -3,7 +3,6 @@ package entities;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
-
 import javax.imageio.ImageIO;
 
 public class Sprite {

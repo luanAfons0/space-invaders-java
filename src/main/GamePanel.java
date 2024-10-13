@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-
 import entities.Enemy;
 import entities.Player;
 import entities.Projectile;
@@ -89,6 +88,9 @@ public class GamePanel extends JPanel implements Runnable {
         for(int i = 0; i < 10; i++){
             enemies.add(new Enemy((50 * i),5,this));
         }
+
+        // Reset all projectiles
+        projectiles.removeAll(projectiles);
 
         // Reset player
         player = new Player(this, keyHandler);
