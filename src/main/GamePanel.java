@@ -12,15 +12,17 @@ import entities.Player;
 import entities.Projectile;
 import screens.BackGround;
 import screens.GameOver;
+import screens.MainMenu;
 
 public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player(this, keyHandler);
 
-    public boolean running, gameOver;
+    public boolean running, gameOver, mainMenu;
     public BackGround backGround;
     public GameOver gameOverScreen;
+    public MainMenu mainMenuScreen;
 
     private static final int FPS = 60;
     private List<Enemy> enemies = new ArrayList<>();
@@ -35,7 +37,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         this.gameOver = false;
-        this.gameOverScreen = new GameOver(0, 0, keyHandler,"/res/messages/game-over.png");
+        this.mainMenu = true;
+        this.gameOverScreen = new GameOver(0, 0, keyHandler);
+        this.mainMenuScreen = new MainMenu(0, 0, keyHandler);
         this.backGround = new BackGround(0, 0, "/res/sprites/space.jpg");
 
         // Setup all entities
@@ -97,6 +101,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        // Main menu related
+        if(mainMenu == true) {
+            if(keyHandler.spacePressed) {
+                mainMenu = false;
+            }
+            return;
+        }
+
         // Game over related
         if(gameOver == true){
             if(keyHandler.spacePressed){
@@ -153,6 +165,12 @@ public class GamePanel extends JPanel implements Runnable {
         // Game over related
         if(gameOver == true){
             gameOverScreen.draw(g2);
+            return;
+        }
+
+        // Main menu related
+        if(mainMenu == true){
+            mainMenuScreen.draw(g2);
             return;
         }
 
