@@ -8,7 +8,7 @@ public class Enemy extends Sprite{
     GamePanel gamePanel;
 
     public Enemy(int initialX, int initialY, GamePanel gamePanel) {
-        super(initialX, initialY, 5, 50, "/res/alien.png");
+        super(initialX, initialY, 5, 50, "/res/sprites/alien.png");
         this.gamePanel = gamePanel;
     }
 
