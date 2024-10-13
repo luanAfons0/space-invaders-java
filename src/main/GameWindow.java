@@ -3,8 +3,8 @@ package main;
 import javax.swing.JFrame;
 
 public class GameWindow {
-    public static final int WINDOW_WIDTH = 1000;
-    public static final int WINDOW_HEIGHT = 800;
+    public static final int WINDOW_WIDTH = 650;
+    public static final int WINDOW_HEIGHT = 650;
 
     public GameWindow() {
         JFrame window = new JFrame();

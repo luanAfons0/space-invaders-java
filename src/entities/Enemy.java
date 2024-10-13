@@ -18,7 +18,7 @@ public class Enemy {
     }
 
     public void update() {
-        if(enemyX >= GameWindow.WINDOW_WIDTH || enemyX <= 0){
+        if(enemyX >= GameWindow.WINDOW_WIDTH || enemyX + 50 <= 0){
             enemyY += 60;
             speed = -speed;
         }
