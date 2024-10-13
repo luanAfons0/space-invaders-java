@@ -1,8 +1,6 @@
 package entities;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
+import java.util.List;
 import main.GamePanel;
 import main.GameWindow;
 import main.KeyHandler;
@@ -16,10 +14,9 @@ public class Player extends Sprite {
         super(GameWindow.WINDOW_WIDTH / 2, GameWindow.WINDOW_HEIGHT - 100, 5, 50, "/res/ship.png");
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
-        this.rect = new Rectangle(this.x, this.y, this.size, this.size);
     }
 
-    public void update() {
+    public void update(List<Projectile> projecties) {
         if (keyHandler.upPressed == true) {
             if(this.y + speed <= 0) return;
             this.y -= speed;
@@ -44,10 +41,10 @@ public class Player extends Sprite {
             this.y += speed;
         };
 
-        this.updateRectangle();
-    }
+        if(keyHandler.spacePressed){
+            projecties.add(new Projectile(x, y, 5, 15, "/res/alien.png"));
+        }
 
-    public void draw(Graphics2D g2) {
-        g2.drawImage(this.sprite,this.x, this.y, this.size, this.size,null);
+        this.updateRectangle();
     }
 }

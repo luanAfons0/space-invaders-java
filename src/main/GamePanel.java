@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.JPanel;
-
 import entities.Enemy;
 import entities.Player;
+import entities.Projectile;
 
 public class GamePanel extends JPanel implements Runnable {
     public boolean running;
@@ -15,7 +17,8 @@ public class GamePanel extends JPanel implements Runnable {
     private static final int FPS = 60;
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player(this, keyHandler);
-    Enemy simpleEnemy = new Enemy(this);
+    private List<Enemy> enemies = new ArrayList<>();
+    private List<Projectile> projectiles = new ArrayList<>();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT));
@@ -23,6 +26,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+
+        for(int i = 0; i < 10; i++){
+            enemies.add(new Enemy((50 * i),5,this));
+        }
     }
 
     public void startGameThread() {
@@ -60,16 +67,35 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        System.err.println(player.rect.x);
+        if(this.running == false) return;
 
-        if(this.running){
-            player.update();
-            simpleEnemy.update();
+        List<Enemy> deadEnemies = new ArrayList<>();
+        List<Projectile> deadProjectiles = new ArrayList<>();
+
+        player.update(projectiles);
+
+        for(Enemy enemy: enemies){
+            enemy.update();
+
+            if(player.rect.intersects(enemy.rect)){
+                this.running = false;
+            }
+
+            for(Projectile projectile: projectiles){
+                projectile.update();
+
+                if(projectile.rect.intersects(enemy.rect)){
+                    deadEnemies.add(enemy);
+                }
+
+                if(projectile.outOfWindow()){
+                    deadProjectiles.add(projectile);
+                }
+            }
         }
 
-        if(simpleEnemy.rect.intersects(player.rect)){
-            this.running = false;
-        }
+        enemies.removeAll(deadEnemies);
+        projectiles.removeAll(deadProjectiles);
     }
 
     public void paintComponent(Graphics g) {
@@ -78,7 +104,14 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         player.draw(g2);
-        simpleEnemy.draw(g2);
+
+        for(Projectile projectile: projectiles){
+            projectile.draw(g2);
+        }
+
+        for(Enemy enemy: enemies){
+            enemy.draw(g2);
+        }
 
         g2.dispose();
     }

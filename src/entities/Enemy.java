@@ -1,18 +1,15 @@
 package entities;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
 import main.GamePanel;
 import main.GameWindow;
 
 public class Enemy extends Sprite{
     GamePanel gamePanel;
 
-    public Enemy(GamePanel gamePanel) {
-        super(GameWindow.WINDOW_WIDTH / 2, 100, 5, 50, "/res/alien.png");
+    public Enemy(int initialX, int initialY, GamePanel gamePanel) {
+        super(initialX, initialY, 5, 50, "/res/alien.png");
         this.gamePanel = gamePanel;
-        this.rect = new Rectangle(this.x, this.y, this.size, this.size);
     }
 
     public void update() {
