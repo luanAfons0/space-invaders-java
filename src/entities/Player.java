@@ -9,6 +9,7 @@ public class Player extends Sprite {
     int speed = 5;
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    boolean delayShoot = false;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(GameWindow.WINDOW_WIDTH / 2, GameWindow.WINDOW_HEIGHT - 100, 5, 50, "/res/ship.png");
@@ -42,7 +43,7 @@ public class Player extends Sprite {
         };
 
         if(keyHandler.spacePressed){
-            projecties.add(new Projectile(x, y, 5, 15, "/res/alien.png"));
+            projecties.add(new Projectile(x, y, 5, 15, "/res/projectile.png"));
         }
 
         this.updateRectangle();

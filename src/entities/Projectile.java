@@ -1,7 +1,5 @@
 package entities;
 
-import main.GameWindow;
-
 public class Projectile extends Sprite {
     public Projectile(int x, int y, int speed, int size, String image){
         super(x, y, speed, size, image);
@@ -13,6 +11,6 @@ public class Projectile extends Sprite {
     }
 
     public boolean outOfWindow(){
-        return y <= GameWindow.WINDOW_HEIGHT ? true : false;
+        return y <= 0 ? true : false;
     }
 }

@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+
 import entities.Enemy;
 import entities.Player;
 import entities.Projectile;
@@ -68,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         if(this.running == false) return;
+        if(enemies.isEmpty()) return;
 
         List<Enemy> deadEnemies = new ArrayList<>();
         List<Projectile> deadProjectiles = new ArrayList<>();
@@ -80,20 +82,23 @@ public class GamePanel extends JPanel implements Runnable {
             if(player.rect.intersects(enemy.rect)){
                 this.running = false;
             }
+        }
 
-            for(Projectile projectile: projectiles){
-                projectile.update();
+        for(Projectile projectile: projectiles){
+            projectile.update();
 
+            for(Enemy enemy: enemies){
                 if(projectile.rect.intersects(enemy.rect)){
                     deadEnemies.add(enemy);
+                    deadProjectiles.add(projectile) ;
                 }
-
+    
                 if(projectile.outOfWindow()){
                     deadProjectiles.add(projectile);
                 }
             }
         }
-
+        
         enemies.removeAll(deadEnemies);
         projectiles.removeAll(deadProjectiles);
     }
