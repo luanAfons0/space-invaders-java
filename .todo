@@ -1,0 +1,14 @@
+Features:
+  1. Add sounds:
+  - Main menu music.
+  - Game over music.
+  - Sucess music.
+  - Projectile sound.
+  - Kill sound.
+
+  2. Replay system:
+  - Add kill count and player records.
+  - Dificulty system.
+
+Fix:
+  1. Add limit to projectiles input per second.
